@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+
+{% block body %}
+
+<form >
+        <fieldset>
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <h4>Lista Device</h4>
+                </div>
+                <div class="col-md-12 text-left">
+                    
+                    <br>
+                  
+                    {% for lista_obj, local_device, tipo_device, nome_device in lista_Device %}
+
+                        Local: {{local_device}}<br>
+                        Tipo:  {{tipo_device}}<br>
+                        Nome:  <a href="/dashboard/?z={{lista_obj}}">{{nome_device}}</a><br>            
+                        <p></p>
+                    {% endfor %} 
+                    
+                </div>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
+
+
+
+     

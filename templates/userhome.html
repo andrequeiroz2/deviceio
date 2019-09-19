@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+
+
+
+{% block body %}
+
+
+<style>
+    #button{ text-align: center }
+    .btn{
+        width: 190px;
+        text-align: center;
+        padding: 15px 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        font-size: 18px;
+    }
+</style>
+<form >
+    <fieldset>
+        <div class="form-group">
+            <div class="col-md-12 text-center">
+                <h5>Bem vindo(a) {{usuario}}</h5>
+                <br>
+                
+                <div id="button">
+                        <p><a href="{% url 'registerDevice' %}" class="btn btn-primary">Cadatrar Device</a></p>
+                        <p><a href="{% url 'listDevice' %}" class="btn btn-primary">Listar Device</a></p>
+                        <p><a href="{% url 'login' %}" class="btn btn-secondary">Voltar</a></p>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
+{% endblock %}
+

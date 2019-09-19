@@ -1,0 +1,132 @@
+
+{% extends "base.html" %}
+
+{% block body %}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+
+<form>
+        <fieldset>
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <h4>Dashboard</h4>
+                    <div class="table-responsive-sm">
+                      <table class="table table-bordered">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col">Local</th>
+                                  <th scope="col">Tipo</th>
+                                  <th scope="col">Nome</th>
+                                  <th scope="col">Mac Address</th>
+                                  <th scope="col">Topico</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>{{localDevice}}</td>
+                                  <td>{{tipoDevice}}</td>
+                                  <td>{{nomeDevice}}</td>
+                                  <td>{{macAddress}}</td>
+                                  <td>{{topico}}</td>
+                                </tr>
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+</form>
+
+<form>
+  <fieldset>
+    <div class="form-group">
+      <div class="col-md-12 text-center">
+        
+        <table class="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col"><h4>MQTT.js</h4></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><h2>&nbsp;<span id="payload" class="label">Unknown</span></h2></td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+
+    </div>
+  </fieldset>
+</form>
+
+
+<script type="text/javascript">
+
+/*Parametros de Conexao com o Broker MQTT*/
+var hostname = "broker.hivemq.com";
+var port = 8000;
+var clientId = "ClientId" + new Date().getTime();
+clientId += new Date().getUTCMilliseconds();;
+var subscription = "{{topico}}".replace(/&quot;/g,"\"");
+
+mqttClient = new Paho.MQTT.Client(hostname, port, clientId);
+mqttClient.onMessageArrived =  MessageArrived;
+mqttClient.onConnectionLost = ConnectionLost;
+Connect();
+
+/*Inicia a Conexao como Broker MQTT*/
+function Connect(){
+	mqttClient.connect({
+		onSuccess: Connected,
+		onFailure: ConnectionFailed,
+		keepAliveInterval: 10,
+		useSSL: false,
+	});
+}
+
+/*Callback for successful MQTT connection */
+function Connected() {
+  console.log("Conectado ao broker "+ hostname +" com Sucesso");
+  mqttClient.subscribe(subscription);
+}
+
+/*Callback for failed connection*/
+function ConnectionFailed(res) {
+	console.log("Connect failed:" + res.errorMessage);
+}
+
+/*Callback for lost connection*/
+function ConnectionLost(res) {
+  if (res.errorCode != 0) {
+	console.log("Connection lost:" + res.errorMessage);
+	Connect();
+  }
+}
+
+/*Callback for incoming message processing */
+function MessageArrived(message) {
+	
+	console.log(message.destinationName +" : " + message.payloadString);
+  payload = message.payloadString;
+  var topic = message.destinationName.split("/");
+	var ioname = topic[1];
+	UpdateElement(payload);
+}
+
+function UpdateElement(payload){
+
+  
+  $('#payload').text(payload + ' °C');
+  $('#payload').removeClass('').addClass('label-default');
+
+	
+ } 
+</script>
+
+{% endblock %}
+
+console.log(cell.value);
+cell.className = displayClass;
+$('#livingTempSensor').html('(Sensor value: ' + payload + ')');

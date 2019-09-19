@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block body %}
+
+{% if error_message %}
+<script>
+        alert('{{ error_message }}');
+</script>
+{%endif%}
+
+<form method="POST">{% csrf_token %}
+    <fieldset>
+        {% for field in form %}
+    <div class="form-group">
+        <label for="{{field.auto_id}}" class="col-sm-12 text-center control-label"><strong>{{field.label}}:</strong></label>
+                  <div class="col-md-12 text-center">
+						{% render_field field class='form-control-sm'%}
+				      </div>
+        {%endfor%}
+        <div class="container"><br>
+            <div class="col-sm-12 text-center">
+            <button class="btn btn-primary" type="submit">Registrar-se</button>
+            
+        </div>
+        </fieldset>
+    </form>
+
+
+{% endblock %}

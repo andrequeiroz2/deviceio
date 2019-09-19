@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block body %}
+
+{% if error_message %}
+<script>
+        alert('{{ error_message }}');
+</script>
+{%endif%}
+
+<style>
+    #button{ text-align: center }
+    .btn{
+        width: 190px;
+        text-align: center;
+        padding: 15px 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        font-size: 18px;
+    }
+</style>
+
+<form method="POST">{% csrf_token %}
+    <fieldset>
+       
+    <div class="form-group">
+
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div id="banner" class="col-md-auto">
+                        <video id="preview" width="320" height="240"></video>
+                        <script type="text/javascript">
+                            let scanner = new Instascan.Scanner({ video: document.getElementById("preview") });
+                            scanner.addListener('scan', function (content) {
+                                document.getElementById("id_qrcode").value = content;
+                            });
+                            Instascan.Camera.getCameras().then(function (cameras) {
+                            if (cameras.length > 0) {
+                                scanner.start(cameras[0]);
+                            } else {
+                                console.error('No cameras found.');
+                                }
+                            }).catch(function (e) {
+                                console.error(e);
+                            });
+                        </script>
+                    </div> 
+                </div>
+            </div>
+        
+        {% for field in form %}
+
+        <label for="{{field.auto_id}}" class="col-sm-12 text-center control-label"><strong>{{field.label}}:</strong></label>
+        <div class="col-md-12 text-center">
+			{% render_field field class='form-control-sm'%}
+		</div>
+        {%endfor%}
+        <div id="button" class="container"><br>
+            <div class="col-sm-12 text-center">
+            <p><button class="btn btn-primary" type="submit">Registrar Device</button></p>
+        </div>
+    </fieldset>    
+</form>
+
+{% endblock %}
+
+
+        
+       
+
+    
+    
