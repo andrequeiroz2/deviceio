@@ -46,6 +46,8 @@ Qrcode    : [instascan](https://github.com/schmich/instascan)
 
 Protocolo : [MQTT.js](https://github.com/mqttjs)
 
+Broker : [HiveMQ](https://www.hivemq.com/)
+
 ## Contribuição
 
 Hussan [guithub](https://github.com/hussanhijazi)
