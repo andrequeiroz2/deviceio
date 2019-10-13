@@ -2,7 +2,17 @@
 {% extends "base.html" %}
 
 {% block body %}
-
+<style>
+  #button{ text-align: center }
+  .btn{
+      width: 190px;
+      text-align: center;
+      padding: 15px 20px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      font-size: 18px;
+  }
+</style>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
 <form>
@@ -15,10 +25,10 @@
                               <thead class="thead-dark">
                                 <tr>
                                   <th scope="col">Local</th>
-                                  <th scope="col">Tipo</th>
-                                  <th scope="col">Nome</th>
+                                  <th scope="col">Type</th>
+                                  <th scope="col">Name</th>
                                   <th scope="col">Mac Address</th>
-                                  <th scope="col">Topico</th>
+                                  <th scope="col">Topic</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -27,7 +37,12 @@
                                   <td>{{tipoDevice}}</td>
                                   <td>{{nomeDevice}}</td>
                                   <td>{{macAddress}}</td>
-                                  <td>{{topico}}</td>
+                                  <td>
+                                      
+                                    <p>{{topico.0}}</p>
+                                    <p>{{topico.1}}</p>
+                                       
+                                  </td>
                                 </tr>
                               </tbody>
                         </table>
@@ -41,16 +56,19 @@
   <fieldset>
     <div class="form-group">
       <div class="col-md-12 text-center">
-        
         <table class="table table-dark">
           <thead>
             <tr>
-              <th scope="col"><h4>MQTT.js</h4></th>
+              <th scope="col">Temperature</th>
+              <th scope="col">Humidity</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><h2>&nbsp;<span id="payload" class="label">Unknown</span></h2></td>
+              <td><h2>&nbsp;<span id="temp" class="label"></span></h2></td>
+              <td><h2>&nbsp;<span id="humd" class="label"></span></h2></td>
+              <td><h3>&nbsp;<span id="status" class="label"></span></h3></td>
             </tr>
           </tbody>
         </table>
@@ -58,9 +76,11 @@
       </div>
 
     </div>
+    <div id="button">
+      <p><a href="{% url 'listDevice' %}" class="btn btn-secondary">Back</a></p>
+    </div>
   </fieldset>
 </form>
-
 
 <script type="text/javascript">
 
@@ -68,8 +88,11 @@
 var hostname = "broker.hivemq.com";
 var port = 8000;
 var clientId = "ClientId" + new Date().getTime();
-clientId += new Date().getUTCMilliseconds();;
-var subscription = "{{topico}}".replace(/&quot;/g,"\"");
+clientId += new Date().getUTCMilliseconds();
+
+var subscription_temp        = "{{topico.0}}".replace(/&quot;/g,"\"");
+var subscription_humd        = "{{topico.1}}".replace(/&quot;/g,"\"");
+var subscription_status      = "{{topico.2}}".replace(/&quot;/g,"\"");
 
 mqttClient = new Paho.MQTT.Client(hostname, port, clientId);
 mqttClient.onMessageArrived =  MessageArrived;
@@ -89,7 +112,9 @@ function Connect(){
 /*Callback for successful MQTT connection */
 function Connected() {
   console.log("Conectado ao broker "+ hostname +" com Sucesso");
-  mqttClient.subscribe(subscription);
+  mqttClient.subscribe(subscription_temp);
+  mqttClient.subscribe(subscription_humd);
+  mqttClient.subscribe(subscription_status);
 }
 
 /*Callback for failed connection*/
@@ -109,24 +134,64 @@ function ConnectionLost(res) {
 function MessageArrived(message) {
 	
 	console.log(message.destinationName +" : " + message.payloadString);
-  payload = message.payloadString;
+
   var topic = message.destinationName.split("/");
-	var ioname = topic[1];
+  
+  if (topic[3] === "status"){
+     var payload_status = message.payloadString;
+  }
+  
+  if (topic[3] === "temperature"){
+     var payload_temp = message.payloadString;
+  } 
+  
+  if (topic[3] === "humidity"){
+     var payload_humd = message.payloadString;
+  }
+
+  payload = [payload_temp, payload_humd, payload_status];
+  
 	UpdateElement(payload);
 }
 
 function UpdateElement(payload){
 
+  if (typeof payload[0] !== "undefined"){
+    
+    $('#temp').text(payload[0] + ' °C');
+    $('#temp').removeClass('').addClass('label-default');
   
-  $('#payload').text(payload + ' °C');
-  $('#payload').removeClass('').addClass('label-default');
+  }
+    
+  if (typeof payload[1] !== "undefined"){
 
-	
- } 
+    $('#humd').text(payload[1] + ' %');
+    $('#humd').removeClass('').addClass('label-default');
+
+  } 
+    $('#status').text(payload[2]);
+    $('#status').removeClass('').addClass('label-default'); 
+  
+  if (payload[2] === "Sensor Offiline"){
+    var dateTime_db = last_read_date();
+  }
+
+} 
+
+function last_read_date(){
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
+  return dateTime;
+}
+
 </script>
 
 {% endblock %}
 
-console.log(cell.value);
-cell.className = displayClass;
-$('#livingTempSensor').html('(Sensor value: ' + payload + ')');
+
+
+
+
+

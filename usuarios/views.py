@@ -1,19 +1,17 @@
 from django.shortcuts import render
 from django.views.generic import FormView
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, ForgotPasswordForm
 from deviceio.settings import FIREBASE_CONFIG
 import pyrebase
 from django.http import HttpResponseRedirect
 
-#global firebase
-#global authe
-#global db
-
+import json
+import urllib.request
+import urllib.error
 
 firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 authe = firebase.auth()
 db = firebase.database()
-
 
 # View registro user (note que o controle do form é feito pelo DJANGO, não pelo HTML). O Firebase (tanto o auth como o DB
 #são legais, porém eles "alejam" uma série de features que o framework já tem, principalmente na questão de user autenticado
@@ -66,7 +64,7 @@ class LoginView(FormView):
                 
                 return render(request, 'userhome.html', {'usuario': user['email']})
             except:
-                error_message = 'Ops! Email ou senha incorreto(a)!'
+                error_message = 'ERROR! Email or password incorrect!'
                 return render(request, 'login.html', {'form': form, 'error_message': error_message})
 
 
@@ -79,5 +77,18 @@ def logoutView(request):
         return HttpResponseRedirect('login')
 
 
-def userhome(request):
-    return HttpResponseRedirect('userhome')
+class ForgotPasswordView(FormView):
+    form_class = ForgotPasswordForm
+    template_name = 'forgotPassword.html'
+    
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            try:
+                email_recover = form.cleaned_data.get('email')
+                authe.send_password_reset_email(email_recover)
+                message="Password reset. Check your email box"
+                return HttpResponseRedirect('login')
+            except:
+                error_message = 'ERROR! Email not registered!'
+                return render(request, 'forgotPassword.html', {'form': form, 'error_message': error_message})

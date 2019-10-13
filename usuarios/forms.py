@@ -10,3 +10,6 @@ class RegisterForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(max_length=100, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(max_length=100, required=True)

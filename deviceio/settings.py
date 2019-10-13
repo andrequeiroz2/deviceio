@@ -123,11 +123,11 @@ STATIC_URL = '/static/'
 
 FIREBASE_CONFIG = {
 
-    "apiKey": "",
-    "authDomain": "",
-    "databaseURL": "",
-    "projectId": "",
+    "apiKey": "AIzaSyCEOjgmctG0ngr0C3Lx0Jkx5H9_2gLaMdY",
+    "authDomain": "deviceio.firebaseapp.com",
+    "databaseURL": "https://deviceio.firebaseio.com",
+    "projectId": "deviceio",
     "storageBucket": "",
-    "messagingSenderId": "",
-    "appId": ""
+    "messagingSenderId": "1023906245363",
+    "appId": "1:1023906245363:web:ae35f0c6baa56831922586"
 }

@@ -10,7 +10,7 @@ from django.contrib import messages
 
 from usuarios.views import  authe, db
 
-
+NAME_PROJECT = 'deviceio'
 
 class RegisterDeviceView(FormView):
     form_class = RegisterDeviceForm
@@ -26,8 +26,8 @@ class RegisterDeviceView(FormView):
            
                 #separa as informacoes do qrcode (mac[12:12:12:12];typeDevice[dht11]) 
                 qrcode_split = qrcode.split(';')
-                macAddress = qrcode_split[0]
-                typeDevice = qrcode_split[1]
+                typeDevice = qrcode_split[0]
+                macAddress = qrcode_split[1]
                 
                 idtoken = request.session['uid']
                 a = authe.get_account_info(idtoken)
@@ -43,11 +43,11 @@ class RegisterDeviceView(FormView):
                 }
                     
                 db.child("usuarios").child(a).child("dadosDevice").child(macAddress).set(data, idtoken)
-                messages.success(request, 'Seu Device foi Cadastrado com Sucesso!')
+                messages.success(request, 'Your device has been successfully registered')
 
                 return render(request, 'userhome.html') #, {'usuario': user['email']}
             except:
-                error_message = 'Ops! Erro ao Registrar o Device!'
+                error_message = 'ERROR! Unable to register your device!'
                 return render(request, 'registerDevice.html', {'form': form,'error_message': error_message})
 
 
@@ -97,16 +97,32 @@ def dashboard(request):
     a = a[0]
     a = a['localId']
 
-
     macAddress  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('macAddress').get(idtoken).val()
     tipoDevice  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('type').get(idtoken).val()
     nomeDevice  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('name').get(idtoken).val()
     localDevice = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('local').get(idtoken).val()
     
-    topico_composto = ('coffeeiot/', str(tipoDevice), '/', str(macAddress))
-    separador = ''
-    topico = separador.join(topico_composto)
+    topico = topic_composer(tipoDevice,macAddress)
 
     return render(request, 'dashboard.html', {'macAddress':macAddress,'tipoDevice':tipoDevice,'nomeDevice':nomeDevice,'localDevice':localDevice,'topico':topico})
 
 
+def topic_composer(tipoDevice, macAddress):
+
+    topic_sub = ['temperature','humidity','status','dateFailure']
+    topic     = []
+    topics    = []
+
+    device = str(tipoDevice)
+    mac    = str(macAddress)
+
+    if device == 'dht11' or 'dht22':
+
+        for i in range(len(topic_sub)):
+            topic = topic_sub[i]
+            topic_composition = (NAME_PROJECT, '/', device, '/', mac, '/', topic)
+            topic_sub[i]
+            agglutinate = ''
+            topics.append(agglutinate.join(topic_composition))
+        return topics
+        

@@ -4,29 +4,32 @@
 {% block body %}
 
 <form >
-        <fieldset>
-            <div class="form-group">
-                <div class="col-md-12 text-center">
-                    <h4>Lista Device</h4>
-                </div>
-                <div class="col-md-12 text-left">
-                    
-                    <br>
-                  
-                    {% for lista_obj, local_device, tipo_device, nome_device in lista_Device %}
-
-                        Local: {{local_device}}<br>
-                        Tipo:  {{tipo_device}}<br>
-                        Nome:  <a href="/dashboard/?z={{lista_obj}}">{{nome_device}}</a><br>            
-                        <p></p>
-                    {% endfor %} 
-                    
-                </div>
+    <fieldset>
+        <div class="form-group">
+            <div class="col-md-12 text-center">
+                <h4>List Device</h4>
             </div>
-        </fieldset>
-    </form>
+            <div class="table-responsive-sm">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Local</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    {% for lista_obj, local_device, tipo_device, nome_device in lista_Device %}
+                        <tbody>
+                            <tr>
+                                <td>{{local_device}}</td>
+                                <td>{{tipo_device}}</td>
+                                <td><a href="/dashboard/?z={{lista_obj}}">{{nome_device}}</a></td>
+                              </tr>
+                            </tbody>
+                            {% endfor %} 
+                </table>
+                  
+            </div>
+    </fieldset>
+</form>
 {% endblock %}
-
-
-
-     
