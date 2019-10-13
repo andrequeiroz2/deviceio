@@ -1,6 +1,6 @@
 # DeviceIO
 
-![Screenshot](sensor1.jpg)
+![Screenshot](images/sensorDHT.jpg)
 
 DeviceIO é um projeto para adoção de dispositivos IOT, utiliza o Django Framework, Firebase Authentication (para autenticação do usuário) e o RealTime Database (para gerenciar dispositivos adotados). O cadastro do dispositivo IOT é feito com Qrcode e o protocolo de comunicação é o MQTT.
 
