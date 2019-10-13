@@ -8,11 +8,11 @@ DeviceIO é um projeto para adoção de dispositivos IOT, utiliza o Django Frame
 
 
 ```bash
-python3 -m venv (nome)
+$ python3 -m venv (nome)
 
-/source (nome)/bin/activate
+$ source (nome)/bin/activate
 
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 
 ```
 
