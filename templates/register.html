@@ -2,6 +2,18 @@
 {% load widget_tweaks %}
 
 {% block body %}
+<style>
+    #button{ text-align: center }
+    .btn{
+        width: 190px;
+        text-align: center;
+        padding: 15px 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        font-size: 18px;
+    }
+  </style>
+  
 
 {% if error_message %}
 <script>
@@ -18,9 +30,10 @@
 						{% render_field field class='form-control-sm'%}
 				      </div>
         {%endfor%}
-        <div class="container"><br>
+        <div id='button' class="container"><br>
             <div class="col-sm-12 text-center">
-            <button class="btn btn-primary" type="submit">Registrar-se</button>
+            <p><button class="btn btn-primary" type="submit">Sign up</button></p>
+            <p><a href="{% url 'login' %}" class="btn btn-secondary">Back</a></p>
             
         </div>
         </fieldset>

@@ -18,9 +18,16 @@
         border-radius: 6px;
         font-size: 18px;
     }
+    #logout{
+      right: 80px;
+      top: 90px;
+    } 
 </style>
 
 <form method="POST">{% csrf_token %}
+    <div id="logout">
+        <p><a href="{% url 'logout' %}">logout</a></p>
+    </div>
     <fieldset>
        
     <div class="form-group">
@@ -57,7 +64,8 @@
         {%endfor%}
         <div id="button" class="container"><br>
             <div class="col-sm-12 text-center">
-            <p><button class="btn btn-primary" type="submit">Registrar Device</button></p>
+            <p><button class="btn btn-primary" type="submit">Register Device</button></p>
+            <p><a href="{% url 'userhome' %}" class="btn btn-secondary">Back</a></p>
         </div>
     </fieldset>    
 </form>

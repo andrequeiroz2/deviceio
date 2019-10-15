@@ -17,8 +17,15 @@
         border-radius: 6px;
         font-size: 18px;
     }
+    #logout{
+      right: 80px;
+      top: 90px;
+    } 
 </style>
 <form >
+    <div id="logout">
+        <p><a href="{% url 'logout' %}">logout</a></p>
+    </div>
     <fieldset>
         <div class="form-group">
             <div class="col-md-12 text-center">

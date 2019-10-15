@@ -77,6 +77,10 @@ def logoutView(request):
         return HttpResponseRedirect('login')
 
 
+def userhome(request):
+    return render(request, 'userhome.html')
+
+
 class ForgotPasswordView(FormView):
     form_class = ForgotPasswordForm
     template_name = 'forgotPassword.html'
@@ -92,3 +96,5 @@ class ForgotPasswordView(FormView):
             except:
                 error_message = 'ERROR! Email not registered!'
                 return render(request, 'forgotPassword.html', {'form': form, 'error_message': error_message})
+
+

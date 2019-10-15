@@ -2,8 +2,29 @@
 {% extends "base.html" %}
 
 {% block body %}
-
+<style>
+    #button{ text-align: center }
+    .btn{
+        width: 190px;
+        text-align: center;
+        padding: 15px 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        font-size: 18px;
+    }
+    #logout{
+      right: 80px;
+      top: 90px;
+  }
+  #icon{
+   padding-left: 3em;
+} 
+  
+  </style>
 <form >
+    <div id="logout">
+        <p><a href="{% url 'logout' %}">logout</a></p>
+    </div>
     <fieldset>
         <div class="form-group">
             <div class="col-md-12 text-center">
@@ -16,6 +37,7 @@
                             <th scope="col">Local</th>
                             <th scope="col">Type</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     {% for lista_obj, local_device, tipo_device, nome_device in lista_Device %}
@@ -23,12 +45,21 @@
                             <tr>
                                 <td>{{local_device}}</td>
                                 <td>{{tipo_device}}</td>
-                                <td><a href="/dashboard/?z={{lista_obj}}">{{nome_device}}</a></td>
+                                <td>{{nome_device}}</td>
+                                <td>
+                                    <a href="/dashboard/?z={{lista_obj}}"><ion-icon id="icon" name="eye">{{nome_device}}</ion-icon></a>
+                                    <ion-icon id="icon" name="git-compare"></ion-icon>
+                                    <ion-icon id="icon" name="trash"></ion-icon>
+                                </td>
+                                
                               </tr>
                             </tbody>
                             {% endfor %} 
                 </table>
                   
+            </div>
+            <div id="button">
+                <p><a href="{% url 'userhome' %}" class="btn btn-secondary">Back</a></p>
             </div>
     </fieldset>
 </form>
