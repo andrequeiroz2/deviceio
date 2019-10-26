@@ -43,13 +43,14 @@
                               <tbody>
                                 <tr>
                                   <td>{{localDevice}}</td>
-                                  <td>{{tipoDevice}}</td>
-                                  <td>{{nomeDevice}}</td>
+                                  <td>{{typeDevice}}</td>
+                                  <td>{{nameDevice}}</td>
                                   <td>{{macAddress}}</td>
                                   <td>
                                       
-                                    <p>{{topico.0}}</p>
-                                    <p>{{topico.1}}</p>
+                                    <p>{{topic.0}}</p>
+                                    <p>{{topic.1}}</p>
+                                    <p>{{topic.2}}</p>
                                        
                                   </td>
                                 </tr>
@@ -71,6 +72,7 @@
               <th scope="col">Temperature</th>
               <th scope="col">Humidity</th>
               <th scope="col">Status</th>
+              <th scope="col">Last Read</th>
             </tr>
           </thead>
           <tbody>
@@ -78,6 +80,7 @@
               <td><h2>&nbsp;<span id="temp" class="label"></span></h2></td>
               <td><h2>&nbsp;<span id="humd" class="label"></span></h2></td>
               <td><h3>&nbsp;<span id="status" class="label"></span></h3></td>
+              <td><h3>&nbsp;<span id="last_read" class="label"></span></h3></td>
             </tr>
           </tbody>
         </table>
@@ -99,9 +102,9 @@ var port = 8000;
 var clientId = "ClientId" + new Date().getTime();
 clientId += new Date().getUTCMilliseconds();
 
-var subscription_temp        = "{{topico.0}}".replace(/&quot;/g,"\"");
-var subscription_humd        = "{{topico.1}}".replace(/&quot;/g,"\"");
-var subscription_status      = "{{topico.2}}".replace(/&quot;/g,"\"");
+var subscription_temp        = "{{topic.0}}".replace(/&quot;/g,"\"");
+var subscription_humd        = "{{topic.1}}".replace(/&quot;/g,"\"");
+var subscription_status      = "{{topic.2}}".replace(/&quot;/g,"\"");
 
 mqttClient = new Paho.MQTT.Client(hostname, port, clientId);
 mqttClient.onMessageArrived =  MessageArrived;
@@ -167,15 +170,23 @@ function UpdateElement(payload){
 
   if (typeof payload[0] !== "undefined"){
     
+
     $('#temp').text(payload[0] + ' °C');
     $('#temp').removeClass('').addClass('label-default');
-  
+    
+
+    $('#last_read').text(last_read_date());
+    $('#last_read').removeClass('').addClass('label-default');
+
   }
     
   if (typeof payload[1] !== "undefined"){
 
     $('#humd').text(payload[1] + ' %');
     $('#humd').removeClass('').addClass('label-default');
+
+    $('#last_read').text(last_read_date());
+    $('#last_read').removeClass('').addClass('label-default');
 
   } 
     $('#status').text(payload[2]);
@@ -189,7 +200,7 @@ function UpdateElement(payload){
 
 function last_read_date(){
   var today = new Date();
-  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   var dateTime = date+' '+time;
   return dateTime;

@@ -103,22 +103,22 @@ def dashboard(request):
     a = a['localId']
 
     macAddress  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('macAddress').get(idtoken).val()
-    tipoDevice  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('type').get(idtoken).val()
-    nomeDevice  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('name').get(idtoken).val()
+    typeDevice  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('type').get(idtoken).val()
+    nameDevice  = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('name').get(idtoken).val()
     localDevice = db.child('usuarios').child(a).child('dadosDevice').child(elementos).child('local').get(idtoken).val()
     
-    topico = topic_composer(tipoDevice,macAddress)
+    topic = topic_composer(typeDevice,macAddress)
 
-    return render(request, 'dashboard.html', {'macAddress':macAddress,'tipoDevice':tipoDevice,'nomeDevice':nomeDevice,'localDevice':localDevice,'topico':topico})
+    return render(request, 'dashboard.html', {'macAddress':macAddress,'typeDevice':typeDevice,'nameDevice':nameDevice,'localDevice':localDevice,'topic':topic})
 
 
-def topic_composer(tipoDevice, macAddress):
+def topic_composer(typeDevice, macAddress):
 
-    topic_sub = ['temperature','humidity','status','dateFailure']
+    topic_sub = ['temperature','humidity','status']
     topic     = []
     topics    = []
 
-    device = str(tipoDevice)
+    device = str(typeDevice)
     mac    = str(macAddress)
 
     if device == 'dht11' or 'dht22':
