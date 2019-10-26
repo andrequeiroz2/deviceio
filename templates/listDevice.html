@@ -34,15 +34,17 @@
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
+                            <th scope="col">Key</th>
                             <th scope="col">Local</th>
                             <th scope="col">Type</th>
                             <th scope="col">Name</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    {% for lista_obj, local_device, tipo_device, nome_device in lista_Device %}
+                    {% for lista_obj, key_device, local_device, tipo_device, nome_device in lista_Device %}
                         <tbody>
                             <tr>
+                                <td>{{key_device}}</td>
                                 <td>{{local_device}}</td>
                                 <td>{{tipo_device}}</td>
                                 <td>{{nome_device}}</td>

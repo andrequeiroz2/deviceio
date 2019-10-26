@@ -67,6 +67,11 @@ def listDevice(request):
         lista_obj.append(i)
     lista_obj.sort(reverse=True)
 
+    key_device = []
+    for i in lista_obj:
+        db_key_device = db.child('usuarios').child(a).child('dadosDevice').child(i).child('macAddress').get(idtoken).val()
+        key_device.append(db_key_device)
+
     local_device = []
     for i in lista_obj:
         db_local_device = db.child('usuarios').child(a).child('dadosDevice').child(i).child('local').get(idtoken).val()
@@ -82,7 +87,7 @@ def listDevice(request):
         db_nome_device = db.child('usuarios').child(a).child('dadosDevice').child(i).child('name').get(idtoken).val()
         nome_device.append(db_nome_device)
 
-    lista_Device = zip(lista_obj, local_device, tipo_device, nome_device)
+    lista_Device = zip(lista_obj, key_device, local_device, tipo_device, nome_device)
     
     return render(request, 'listDevice.html', {'lista_Device':lista_Device})
 
