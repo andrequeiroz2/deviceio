@@ -1,6 +1,6 @@
 certifi==2019.6.16
 chardet==3.0.4
-Django==2.2.3
+Django==2.2.4
 django-widget-tweaks==1.4.5
 gcloud==0.18.3
 googleapis-common-protos==1.6.0
