@@ -20,7 +20,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'jv^1+s6gd*b!27szcj_%0*_v(ti&96)pwz-3s$dacz%ot2^bnf'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -123,11 +123,11 @@ STATIC_URL = '/static/'
 
 FIREBASE_CONFIG = {
 
-    "apiKey": "AIzaSyCEOjgmctG0ngr0C3Lx0Jkx5H9_2gLaMdY",
-    "authDomain": "deviceio.firebaseapp.com",
-    "databaseURL": "https://deviceio.firebaseio.com",
-    "projectId": "deviceio",
+    "apiKey": "",
+    "authDomain": "",
+    "databaseURL": "",
+    "projectId": "",
     "storageBucket": "",
-    "messagingSenderId": "1023906245363",
-    "appId": "1:1023906245363:web:ae35f0c6baa56831922586"
+    "messagingSenderId": "",
+    "appId": ""
 }
